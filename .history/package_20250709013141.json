@@ -9,9 +9,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "heroku-postbuild": "npm run build",
-    "cpanel-deploy": "npm install && npm run build",
-    "postinstall": "npm run build"
+    "heroku-postbuild": "npm run build"
   },
   "engines": {
     "node": "20.19.2",

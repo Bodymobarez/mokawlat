@@ -18,10 +18,29 @@ const initialState: FormState = {
   error: false,
 };
 
-function Results({ state, isPending }: { state: FormState; isPending: boolean }) {
+function SubmitButton() {
+  const { pending } = useFormStatus();
   const { t } = useLanguage();
 
-  if (isPending) {
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          {t('generating')}...
+        </>
+      ) : (
+        t('get_suggestions')
+      )}
+    </Button>
+  );
+}
+
+function Results({ state }: { state: FormState }) {
+  const { pending } = useFormStatus();
+  const { t } = useLanguage();
+
+  if (pending) {
     return (
       <Card>
         <CardHeader>
@@ -81,19 +100,11 @@ function Results({ state, isPending }: { state: FormState; isPending: boolean })
 
 
 export function IsoComplianceClient() {
-  const [state, setState] = useState<FormState>(initialState);
-  const [isPending, startTransition] = useTransition();
+  const [state, formAction] = useActionState(getComplianceSuggestions, initialState);
   const { t } = useLanguage();
 
-  const handleSubmit = (formData: FormData) => {
-    startTransition(async () => {
-      const result = await getComplianceSuggestions(state, formData);
-      setState(result);
-    });
-  };
-
   return (
-    <form action={handleSubmit} className="grid gap-6">
+    <form action={formAction} className="grid gap-6">
       <Card>
         <CardHeader>
           <CardTitle className="font-headline">{t('describe_erp_ops')}</CardTitle>
@@ -108,27 +119,17 @@ export function IsoComplianceClient() {
             rows={8}
             required
             aria-label="ERP Operations Description"
-            disabled={isPending}
           />
         </CardContent>
         <CardFooter className="flex justify-between">
           <p className="text-sm text-muted-foreground">
             {t('suggestions_by_ai')}
           </p>
-          <Button type="submit" disabled={isPending}>
-            {isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t('generating')}...
-              </>
-            ) : (
-              t('get_suggestions')
-            )}
-          </Button>
+          <SubmitButton />
         </CardFooter>
       </Card>
 
-      <Results state={state} isPending={isPending} />
+      <Results state={state} />
     </form>
   );
 }

@@ -18,10 +18,29 @@ const initialState: FormState = {
   error: false,
 };
 
-function Results({ state, isPending }: { state: FormState; isPending: boolean }) {
+function SubmitButton() {
+  const { pending } = useFormStatus();
   const { t } = useLanguage();
 
-  if (isPending) {
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          {t('generating')}...
+        </>
+      ) : (
+        t('get_suggestions')
+      )}
+    </Button>
+  );
+}
+
+function Results({ state }: { state: FormState }) {
+  const { pending } = useFormStatus();
+  const { t } = useLanguage();
+
+  if (pending) {
     return (
       <Card>
         <CardHeader>
