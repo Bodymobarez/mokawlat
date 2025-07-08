@@ -7,23 +7,20 @@
     "build": "next build",
     "build:cpanel": "cross-env NODE_OPTIONS=\"--max-old-space-size=1024 --max-semi-space-size=64\" next build",
     "build:linux": "NODE_OPTIONS='--max-old-space-size=512 --max-semi-space-size=32' next build",
-    "build:minimal": "NODE_OPTIONS='--max-old-space-size=512 --max-semi-space-size=32' next build",
+    "build:minimal": "cross-env NODE_OPTIONS=\"--max-old-space-size=512 --max-semi-space-size=32\" next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "heroku-postbuild": "npm run build:minimal",
-    "cpanel-deploy": "npm install --production && npm run build:minimal",
-    "postinstall": "npm run build:minimal"
+    "heroku-postbuild": "npm run build",
+    "cpanel-deploy": "npm install --production && npm run build",
+    "postinstall": "npm run build"
   },
   "engines": {
     "node": "20.19.2",
     "npm": ">=10.0.0"
   },
   "dependencies": {
-    "@genkit-ai/ai": "^0.5.17",
-    "@genkit-ai/core": "^0.5.17",
-    "@genkit-ai/googleai": "^0.5.17",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
