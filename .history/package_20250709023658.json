@@ -4,16 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 9003",
-    "build": "next build",
-    "build:cpanel": "cross-env NODE_OPTIONS=\"--max-old-space-size=1024 --max-semi-space-size=64\" next build",
-    "build:linux": "NODE_OPTIONS='--max-old-space-size=1024 --max-semi-space-size=64' next build",
+    "build": "NODE_OPTIONS='--max-old-space-size=1024' next build",
+    "build:cpanel": "NODE_OPTIONS='--max-old-space-size=1024 --max-semi-space-size=64' next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "heroku-postbuild": "npm run build:linux",
-    "cpanel-deploy": "npm install && npm run build:linux",
-    "postinstall": "npm run build:linux"
+    "heroku-postbuild": "npm run build:cpanel",
+    "cpanel-deploy": "npm install && npm run build:cpanel",
+    "postinstall": "npm run build:cpanel"
   },
   "engines": {
     "node": "20.19.2",
@@ -77,7 +76,6 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "patch-package": "^8.0.0"
   }
 }
