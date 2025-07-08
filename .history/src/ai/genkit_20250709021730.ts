@@ -1,5 +1,5 @@
 import {configureGenkit} from '@genkit-ai/core';
-import {googleAI, geminiPro} from '@genkit-ai/googleai';
+import {googleAI} from '@genkit-ai/googleai';
 
 // Check if Google AI API key is available
 const googleApiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENAI_API_KEY;
@@ -11,8 +11,8 @@ if (!googleApiKey) {
   );
 }
 
-// Export the model instance
-export { geminiPro };
+// In Genkit v0.x, we define and export the model instances we want to use.
+export const geminiPro = googleAI.model('gemini-pro');
 
 // The `configureGenkit` function is used to initialize Genkit with plugins and settings.
 configureGenkit({
